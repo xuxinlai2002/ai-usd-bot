@@ -61,6 +61,47 @@ yarn clean
 yarn rebuild
 ```
 
+## PM2 进程管理
+
+### 安装 PM2（全局）
+```bash
+npm install -g pm2
+```
+
+### PM2 命令
+
+```bash
+# 启动服务
+yarn pm2:start          # 默认启动
+yarn pm2:dev            # 开发环境
+yarn pm2:prod           # 生产环境
+
+# 管理服务
+yarn pm2:stop           # 停止服务
+yarn pm2:restart        # 重启服务
+yarn pm2:reload         # 重载服务（零停机）
+yarn pm2:delete         # 删除服务
+
+# 监控和日志
+yarn pm2:status         # 查看状态
+yarn pm2:logs           # 查看日志
+yarn pm2:monit          # 监控面板
+
+# 使用启动脚本
+./start-pm2.sh          # 默认启动
+./start-pm2.sh dev      # 开发环境
+./start-pm2.sh prod     # 生产环境
+```
+
+### PM2 特性
+
+- ✅ 自动重启（进程崩溃时）
+- ✅ 内存监控（超过 1GB 自动重启）
+- ✅ 日志管理（自动轮转）
+- ✅ 定时重启（每天 0 点）
+- ✅ 进程监控
+- ✅ 零停机重载
+
 ## 测试
 
 ```bash

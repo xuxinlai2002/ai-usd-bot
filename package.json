@@ -15,19 +15,35 @@
     "test-api": "tsx src/test-api.ts",
     "test-bot": "tsx src/test-bot.ts",
     "test-auth": "tsx src/test-auth.ts",
-    "setup": "./setup.sh"
+    "setup": "./setup.sh",
+    "pm2:start": "pm2 start ecosystem.config.cjs",
+    "pm2:stop": "pm2 stop ai-usd-telegram-bot",
+    "pm2:restart": "pm2 restart ai-usd-telegram-bot",
+    "pm2:reload": "pm2 reload ai-usd-telegram-bot",
+    "pm2:delete": "pm2 delete ai-usd-telegram-bot",
+    "pm2:status": "pm2 status",
+    "pm2:logs": "pm2 logs ai-usd-telegram-bot",
+    "pm2:monit": "pm2 monit",
+    "pm2:dev": "pm2 start ecosystem.config.cjs --env development",
+    "pm2:prod": "pm2 start ecosystem.config.cjs --env production"
   },
-  "keywords": ["telegram", "bot", "ai", "chat"],
+  "keywords": [
+    "telegram",
+    "bot",
+    "ai",
+    "chat"
+  ],
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "telegraf": "^4.15.6",
     "axios": "^1.6.2",
-    "dotenv": "^16.3.1"
+    "dotenv": "^16.3.1",
+    "telegraf": "^4.15.6"
   },
   "devDependencies": {
     "@types/node": "^20.10.0",
-    "typescript": "^5.3.2",
-    "tsx": "^4.6.0"
+    "pm2": "^6.0.13",
+    "tsx": "^4.6.0",
+    "typescript": "^5.3.2"
   }
 }
