@@ -45,16 +45,13 @@ async function testChatApi(): Promise<void> {
   ];
 
   try {
-    const response = await axios.post(
+    // 使用简化的 GET 接口
+    const response = await axios.get(
       chatApiUrl,
-      { 
-        messages,
-        auth: token
-      },
       {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+        params: {
+          message: '你好，这是一个测试消息',
+          auth: token
         },
         timeout: 10000 // 10秒超时
       }

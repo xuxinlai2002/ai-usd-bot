@@ -44,22 +44,18 @@ async function testChatApiWithAuth(): Promise<void> {
     }
   ];
 
-  const requestBody = {
-    messages,
+  const requestParams = {
+    message: '你好，这是一个测试消息',
     auth: token
   };
 
-  console.log('📤 发送的请求体:', JSON.stringify(requestBody, null, 2));
+  console.log('📤 发送的请求参数:', JSON.stringify(requestParams, null, 2));
 
   try {
-    const response = await axios.post(
+    const response = await axios.get(
       chatApiUrl,
-      requestBody,
       {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
+        params: requestParams,
         timeout: 10000 // 10秒超时
       }
     );

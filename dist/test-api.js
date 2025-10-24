@@ -23,13 +23,11 @@ async function testChatApi() {
         }
     ];
     try {
-        const response = await axios.post(chatApiUrl, {
-            messages,
-            auth: token
-        }, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
+        // 使用简化的 GET 接口
+        const response = await axios.get(chatApiUrl, {
+            params: {
+                message: '你好，这是一个测试消息',
+                auth: token
             },
             timeout: 10000 // 10秒超时
         });

@@ -125,7 +125,9 @@ Bot 会调用 `/chat` 接口，发送以下格式的数据：
 1. 启动 Bot 后，在 Telegram 中找到您的 Bot
 2. 发送 `/start` 开始对话
 3. 使用 `/token <your_token>` 设置认证 token
-4. 设置 token 后，直接发送任何消息与 AI 对话
+4. 设置 token 后，有两种方式开始对话：
+   - 方式1：直接发送任何消息与 AI 对话
+   - 方式2：使用 `/chat <消息内容>` 命令
 5. Bot 会调用 AI 接口并返回回复
 
 ### Bot 命令
@@ -134,6 +136,7 @@ Bot 会调用 `/chat` 接口，发送以下格式的数据：
 - `/help` - 查看详细使用说明
 - `/token <token>` - 设置认证 token
 - `/token` - 查看当前 token 状态
+- `/chat <消息>` - 发送消息给 AI（简化命令）
 - `/status` - 查看 Bot 状态信息
 
 ## 重要配置说明

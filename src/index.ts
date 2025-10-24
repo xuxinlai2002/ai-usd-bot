@@ -53,8 +53,9 @@ class TelegramBot {
       ctx.reply('🤖 欢迎使用 AI USD Bot！\n\n' +
         '📋 使用步骤：\n' +
         '1. 首先设置您的认证 token\n' +
-        '2. 然后发送消息开始对话\n\n' +
+        '2. 然后开始对话\n\n' +
         '💡 输入 /token <your_token> 来设置认证 token\n' +
+        '💡 输入 /chat <消息> 来发送消息\n' +
         '💡 输入 /help 查看详细说明');
     });
 
@@ -65,8 +66,9 @@ class TelegramBot {
         '• 输入 /token <your_token>\n' +
         '• 例如：/token abc123def456\n\n' +
         '💬 开始对话：\n' +
-        '• 设置 token 后，直接发送消息与我对话\n' +
-        '• 我会调用 AI 接口处理您的请求\n' +
+        '• 方式1：直接发送消息与我对话\n' +
+        '• 方式2：使用 /chat <消息内容>\n' +
+        '• 例如：/chat 你好，请帮我分析市场\n' +
         '• 支持中文和英文对话\n\n' +
         '🔧 其他命令：\n' +
         '• /status - 查看当前状态\n' +
@@ -117,6 +119,31 @@ class TelegramBot {
         `👥 总用户数：${totalUsers}\n` +
         `🌐 API 地址：${this.chatApiUrl}\n\n` +
         `${hasToken ? '💬 您可以开始对话了！' : '🔑 请先设置认证 token'}`);
+    });
+
+    // 处理 /chat 命令 - 简化版本
+    this.bot.command('chat', (ctx: Context) => {
+      const userId = ctx.from?.id;
+      if (!userId) return;
+
+      const message = ctx.message as any;
+      const args = message.text.split(' ').slice(1);
+      
+      if (args.length === 0) {
+        ctx.reply('💬 使用方法：/chat <消息内容>\n\n例如：/chat 你好，请帮我分析市场');
+        return;
+      }
+
+      const userMessage = args.join(' ');
+      const userToken = this.userTokens.get(userId);
+      
+      if (!userToken) {
+        ctx.reply('❌ 请先设置认证 token\n\n💡 使用方法：/token <your_token>');
+        return;
+      }
+
+      // 调用聊天接口
+      this.processChatMessage(ctx, userMessage, userToken);
     });
 
     // 处理所有文本消息
@@ -182,6 +209,45 @@ class TelegramBot {
       console.error('Bot 错误:', err);
       ctx.reply('❌ 机器人发生错误，请稍后重试。');
     });
+  }
+
+  private async processChatMessage(ctx: Context, userMessage: string, userToken: string): Promise<void> {
+    try {
+      // 发送"正在处理"消息
+      const processingMsg = await ctx.reply('⏳ 正在处理您的请求...');
+
+      // 调用聊天接口
+      const response = await this.callChatApi(userMessage, userToken);
+
+      // 删除处理中消息
+      await ctx.deleteMessage(processingMsg.message_id);
+
+      // 发送回复
+      if (response.success) {
+        let replyText = '🤖 AI 回复：\n\n';
+        
+        if (response.transcript) {
+          replyText += response.transcript;
+        } else {
+          replyText += '处理完成，但没有返回具体内容。';
+        }
+
+        // 添加处理信息
+        if (response.roundsUsed) {
+          replyText += `\n\n📊 处理轮次: ${response.roundsUsed}`;
+        }
+        if (response.toolCallsCount) {
+          replyText += `\n🔧 工具调用次数: ${response.toolCallsCount}`;
+        }
+
+        await ctx.reply(replyText);
+      } else {
+        await ctx.reply(`❌ 处理失败：${response.error || '未知错误'}`);
+      }
+    } catch (error) {
+      console.error('处理消息时出错:', error);
+      await ctx.reply('❌ 处理您的请求时发生错误，请稍后重试。');
+    }
   }
 
   private async callChatApi(userMessage: string, userToken: string): Promise<ChatApiResponse> {
