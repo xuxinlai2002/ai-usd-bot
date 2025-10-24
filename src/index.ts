@@ -268,7 +268,7 @@ class TelegramBot {
         {
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${userToken}`
+            'Authorization': userToken.startsWith('Bearer ') ? userToken : `Bearer ${userToken}`
           },
           timeout: 30000 // 30秒超时
         }
