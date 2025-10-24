@@ -79,9 +79,17 @@ yarn test-bot
 ```
 src/
 ├── index.ts          # 主入口文件
+├── test-api.ts       # API 测试
+├── test-auth.ts      # 带 auth 字段的 API 测试
+└── test-bot.ts       # Bot 功能测试
 package.json          # 项目配置
 tsconfig.json         # TypeScript 配置
 .env                  # 环境变量（需要手动创建）
+.gitignore            # Git 忽略文件
+README.md             # 使用说明
+CONFIG.md             # 配置说明
+USAGE.md              # 使用示例
+SUMMARY.md            # 功能总结
 ```
 
 ## API 接口说明
@@ -143,6 +151,18 @@ Bot 会调用 `/chat` 接口，发送以下格式的数据：
 
 - ✅ `TELEGRAM_BOT_TOKEN` 已正确配置
 - ✅ 用户认证 token 通过 Telegram 输入
+- ✅ `.gitignore` 已配置，保护敏感文件
 - Bot 支持中文和英文对话
 - 接口调用超时时间为 30 秒
 - 详细配置说明请查看 `CONFIG.md` 文件
+
+### 🔒 安全说明
+
+项目已配置 `.gitignore` 文件，会自动忽略以下敏感文件：
+- `.env` - 环境变量文件
+- `node_modules/` - 依赖包
+- `dist/` - 构建输出
+- `*.log` - 日志文件
+- IDE 配置文件等
+
+**重要**：请确保不要将包含敏感信息的文件提交到版本控制中。
