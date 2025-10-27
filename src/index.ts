@@ -278,25 +278,25 @@ class TelegramBot {
 
       return response.data;
     } catch (error: any) {
-      console.error('调用聊天接口失败:', error);
+      console.error('Failed to call chat API:', error);
       
       if (error.response) {
         // 服务器返回了错误响应
         return {
           success: false,
-          error: `API 错误 (${error.response.status}): ${error.response.data?.error || error.response.statusText}`
+          error: `API error (${error.response.status}): ${error.response.data?.error || error.response.statusText}`
         };
       } else if (error.request) {
         // 请求发送了但没有收到响应
         return {
           success: false,
-          error: '无法连接到聊天服务器，请检查网络连接'
+          error: 'Unable to connect to chat server, please check your network connection'
         };
       } else {
         // 其他错误
         return {
           success: false,
-          error: error.message || '未知错误'
+          error: error.message || 'Unknown error'
         };
       }
     }

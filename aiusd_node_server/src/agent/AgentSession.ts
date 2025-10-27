@@ -179,8 +179,9 @@ export class AgentSession {
     let roundsUsed = 0;
     const hasSystemMessage = messages.some(msg => msg.role === "system");
     if (!hasSystemMessage) {
-      const systemPrompt = `你是一个专业的AI助手，专门帮助用户进行加密货币交易和资产管理。
-请根据用户的需求，使用可用的工具来帮助他们完成操作。如果用户的问题需要多个步骤，请逐步执行。最后在聊天的结尾给出用户一定的下一步意图的预测`;
+      const systemPrompt = `You are a professional AI assistant specialized in helping users with cryptocurrency trading and asset management.
+Please use the available tools to help users complete operations according to their needs. If the user's question requires multiple steps, please execute them step by step. At the end of the conversation, provide the user with predictions about their next intent.
+IMPORTANT: Always respond in English, regardless of what language the user uses.`;
 
       // 在消息数组的开头插入system消息
       messages.unshift({
@@ -271,7 +272,7 @@ export class AgentSession {
     let roundsUsed = 0;
     const hasSystemMessage = messages.some(msg => msg.role === "system");
     if (!hasSystemMessage) {
-      const systemPrompt = `你是一个意图识别专家，分析聊天内容，预测3到5条，将预测内容存到一个数组中，并以json格式返回，例如：["买入比特币","卖出以太坊"] ，不要做任何额外解释`;
+      const systemPrompt = `You are an intent recognition expert. Analyze the chat content and predict 3 to 5 intents. Store the predictions in an array and return them in JSON format. For example: ["Buy Bitcoin", "Sell Ethereum"]. Do not provide any additional explanations.`;
 
       // 在消息数组的开头插入system消息
       messages.unshift({
