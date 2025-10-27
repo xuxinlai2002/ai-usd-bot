@@ -63,19 +63,19 @@ class TelegramBot {
 
     // 处理 /help 命令
     this.bot.help((ctx: Context) => {
-      ctx.reply('📖 使用说明：\n\n' +
-        '🔑 设置认证 token：\n' +
-        '• 输入 /token <your_token>\n' +
-        '• 例如：/token abc123def456\n\n' +
-        '💬 开始对话：\n' +
-        '• 方式1：直接发送消息与我对话\n' +
-        '• 方式2：使用 /chat <消息内容>\n' +
-        '• 例如：/chat 你好，请帮我分析市场\n' +
-        '• 支持中文和英文对话\n\n' +
-        '🔧 其他命令：\n' +
-        '• /status - 查看当前状态\n' +
-        '• /token - 查看当前 token 状态\n' +
-        '• /start - 重新开始');
+      ctx.reply('📖 Usage Instructions:\n\n' +
+        '🔑 Set Authentication Token:\n' +
+        '• Type /token <your_token>\n' +
+        '• Example: /token abc123def456\n\n' +
+        '💬 Start Chatting:\n' +
+        '• Method 1: Directly send messages to start chatting\n' +
+        '• Method 2: Use /chat <message content>\n' +
+        '• Example: /chat Hello, help me analyze the market\n' +
+        '• Supports both Chinese and English conversations\n\n' +
+        '🔧 Other Commands:\n' +
+        '• /status - Check current status\n' +
+        '• /token - Check current token status\n' +
+        '• /start - Start over');
     });
 
     // 处理 /token 命令
@@ -90,22 +90,22 @@ class TelegramBot {
         // 显示当前 token 状态
         const currentToken = this.userTokens.get(userId);
         if (currentToken) {
-          ctx.reply(`🔑 当前 token 已设置\n\nToken: ${currentToken.substring(0, 8)}...`);
+          ctx.reply(`🔑 Current token is set\n\nToken: ${currentToken.substring(0, 8)}...`);
         } else {
-          ctx.reply('❌ 尚未设置认证 token\n\n💡 使用方法：/token <your_token>');
+          ctx.reply('❌ Authentication token not set yet\n\n💡 Usage: /token <your_token>');
         }
         return;
       }
 
       const token = args.join(' ');
       if (token.length < 10) {
-        ctx.reply('❌ Token 太短，请提供有效的认证 token');
+        ctx.reply('❌ Token is too short, please provide a valid authentication token');
         return;
       }
 
       // 保存用户的 token
       this.userTokens.set(userId, token);
-      ctx.reply(`✅ 认证 token 设置成功！\n\n现在您可以发送消息开始对话了。`);
+      ctx.reply(`✅ Authentication token set successfully!\n\nNow you can send messages to start chatting.`);
     });
 
     // 处理 /status 命令
@@ -116,11 +116,11 @@ class TelegramBot {
       const hasToken = this.userTokens.has(userId);
       const totalUsers = this.userTokens.size;
       
-      ctx.reply(`📊 Bot 状态信息：\n\n` +
-        `👤 您的状态：${hasToken ? '✅ 已设置 token' : '❌ 未设置 token'}\n` +
-        `👥 总用户数：${totalUsers}\n` +
-        `🌐 API 地址：${this.chatApiUrl}\n\n` +
-        `${hasToken ? '💬 您可以开始对话了！' : '🔑 请先设置认证 token'}`);
+      ctx.reply(`📊 Bot Status Information:\n\n` +
+        `👤 Your Status: ${hasToken ? '✅ Token Set' : '❌ Token Not Set'}\n` +
+        `👥 Total Users: ${totalUsers}\n` +
+        `🌐 API URL: ${this.chatApiUrl}\n\n` +
+        `${hasToken ? '💬 You can start chatting now!' : '🔑 Please set authentication token first'}`);
     });
 
     // 处理 /chat 命令 - 简化版本
@@ -132,7 +132,7 @@ class TelegramBot {
       const args = message.text.split(' ').slice(1);
       
       if (args.length === 0) {
-        ctx.reply('💬 使用方法：/chat <消息内容>\n\n例如：/chat 你好，请帮我分析市场');
+        ctx.reply('💬 Usage: /chat <message content>\n\nExample: /chat Hello, help me analyze the market');
         return;
       }
 
