@@ -50,13 +50,15 @@ class TelegramBot {
       const userId = ctx.from?.id;
       if (!userId) return;
       
-      ctx.reply('🤖 欢迎使用 AI USD Bot！\n\n' +
-        '📋 使用步骤：\n' +
-        '1. 首先设置您的认证 token\n' +
-        '2. 然后开始对话\n\n' +
-        '💡 输入 /token <your_token> 来设置认证 token\n' +
-        '💡 输入 /chat <消息> 来发送消息\n' +
-        '💡 输入 /help 查看详细说明');
+      ctx.reply('🤖 Welcome to AI USD Bot!\n\n' +
+        'What can this bot do?\n' +
+        'Your Friendly-AI powered Crypto AIUSD Bot. Buy, Sell, Swap, Transfer.\n\n' +
+        '📋 Usage Steps:\n' +
+        '1. First, set your authentication token\n' +
+        '2. Then start chatting\n\n' +
+        '💡 Type /token <your_token> to set authentication token\n' +
+        '💡 Type /chat <message> to send a message\n' +
+        '💡 Type /help for detailed instructions');
     });
 
     // 处理 /help 命令
@@ -138,7 +140,12 @@ class TelegramBot {
       const userToken = this.userTokens.get(userId);
       
       if (!userToken) {
-        ctx.reply('❌ 请先设置认证 token\n\n💡 使用方法：/token <your_token>');
+        ctx.reply('🤖 Welcome to AI USD Bot!\n\n' +
+          'What can this bot do?\n' +
+          'Your Friendly-AI powered Crypto AIUSD Bot. Buy, Sell, Swap, Transfer.\n\n' +
+          '❌ Please set authentication token first\n\n' +
+          '💡 Usage: /token <your_token>\n' +
+          '💡 Type /help for detailed instructions');
         return;
       }
 
@@ -162,7 +169,12 @@ class TelegramBot {
       // 检查用户是否已设置 token
       const userToken = this.userTokens.get(userId);
       if (!userToken) {
-        await ctx.reply('❌ Please set authentication token first\n\n💡 Usage: /token <your_token>\n💡 Type /help for detailed instructions');
+        await ctx.reply('🤖 Welcome to AI USD Bot!\n\n' +
+          'What can this bot do?\n' +
+          'Your Friendly-AI powered Crypto AIUSD Bot. Buy, Sell, Swap, Transfer.\n\n' +
+          '❌ Please set authentication token first to start\n\n' +
+          '💡 Usage: /token <your_token>\n' +
+          '💡 Type /help for detailed instructions');
         return;
       }
 
