@@ -72,52 +72,7 @@ app.post('/intent/recognition', async (req, res) => {
   }
 });
 
-// 简化的聊天接口 - GET 请求
-app.get('/chat', async (req, res) => {
-  try {
-    const { message, auth } = req.query;
-    
-    if (!message) {
-      return res.status(400).json({
-        success: false,
-        error: 'message 参数是必需的'
-      });
-    }
-
-    if (!auth) {
-      return res.status(401).json({
-        success: false,
-        error: 'auth 参数是必需的'
-      });
-    }
-
-    const messages = [
-      {
-        role: 'user',
-        content: message
-      }
-    ];
-
-    const result = await chat_messages(messages, auth);
-    console.log(result);
-
-    // 返回响应
-    if (result.success) {
-      res.json(result);
-    } else {
-      res.status(500).json(result);
-    }
-
-  } catch (error) {
-    console.error('Server error:', error);
-    res.status(500).json({
-      success: false,
-      error: 'Internal server error: ' + error.message
-    });
-  }
-});
-
-// 原始的聊天API端点（保留兼容性）
+// 提现API端点
 app.post('/chat', async (req, res) => {
   try {
     const { messages } = req.body;

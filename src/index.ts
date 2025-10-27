@@ -155,20 +155,20 @@ class TelegramBot {
       const userMessage = message.text;
 
       if (!userMessage) {
-        await ctx.reply('❌ 无法获取您的消息内容');
+        await ctx.reply('❌ Unable to get your message content');
         return;
       }
 
       // 检查用户是否已设置 token
       const userToken = this.userTokens.get(userId);
       if (!userToken) {
-        await ctx.reply('❌ 请先设置认证 token\n\n💡 使用方法：/token <your_token>\n💡 输入 /help 查看详细说明');
+        await ctx.reply('❌ Please set authentication token first\n\n💡 Usage: /token <your_token>\n💡 Type /help for detailed instructions');
         return;
       }
 
       try {
         // 发送"正在处理"消息
-        const processingMsg = await ctx.reply('⏳ 正在处理您的请求...');
+        const processingMsg = await ctx.reply('⏳ Processing your request...');
 
         // 调用聊天接口
         const response = await this.callChatApi(userMessage, userToken);
@@ -178,43 +178,38 @@ class TelegramBot {
 
         // 发送回复
         if (response.success) {
-          let replyText = '🤖 AI 回复：\n\n';
+          let replyText = '🤖 AI Reply:\n\n';
           
           if (response.transcript) {
-            replyText += response.transcript;
+            // 移除所有 ** 加粗标记
+            let transcript = response.transcript;
+            transcript = transcript.replace(/\*\*/g, '');
+            replyText += transcript;
           } else {
-            replyText += '处理完成，但没有返回具体内容。';
-          }
-
-          // 添加处理信息
-          if (response.roundsUsed) {
-            replyText += `\n\n📊 处理轮次: ${response.roundsUsed}`;
-          }
-          if (response.toolCallsCount) {
-            replyText += `\n🔧 工具调用次数: ${response.toolCallsCount}`;
+            replyText += 'Processing completed, but no specific content was returned.';
           }
 
           await ctx.reply(replyText);
         } else {
-          await ctx.reply(`❌ 处理失败：${response.error || '未知错误'}`);
+          await ctx.reply(`❌ Processing failed: ${response.error || 'Unknown error'}`);
         }
       } catch (error) {
-        console.error('处理消息时出错:', error);
-        await ctx.reply('❌ 处理您的请求时发生错误，请稍后重试。');
+        console.error('Processing message error:', error);
+        await ctx.reply('❌ An error occurred while processing your request, please try again later.');
       }
     });
 
     // 处理错误
     this.bot.catch((err: any, ctx: Context) => {
-      console.error('Bot 错误:', err);
-      ctx.reply('❌ 机器人发生错误，请稍后重试。');
+      console.error('Bot error:', err);
+      ctx.reply('❌ Bot encountered an error, please try again later.');
     });
   }
 
   private async processChatMessage(ctx: Context, userMessage: string, userToken: string): Promise<void> {
     try {
       // 发送"正在处理"消息
-      const processingMsg = await ctx.reply('⏳ 正在处理您的请求...');
+      const processingMsg = await ctx.reply('⏳ Processing your request...');
 
       // 调用聊天接口
       const response = await this.callChatApi(userMessage, userToken);
@@ -224,29 +219,24 @@ class TelegramBot {
 
       // 发送回复
       if (response.success) {
-        let replyText = '🤖 AI 回复：\n\n';
+        let replyText = '🤖 AI Reply:\n\n';
         
         if (response.transcript) {
-          replyText += response.transcript;
+          // 移除所有 ** 加粗标记
+          let transcript = response.transcript;
+          transcript = transcript.replace(/\*\*/g, '');
+          replyText += transcript;
         } else {
-          replyText += '处理完成，但没有返回具体内容。';
-        }
-
-        // 添加处理信息
-        if (response.roundsUsed) {
-          replyText += `\n\n📊 处理轮次: ${response.roundsUsed}`;
-        }
-        if (response.toolCallsCount) {
-          replyText += `\n🔧 工具调用次数: ${response.toolCallsCount}`;
+          replyText += 'Processing completed, but no specific content was returned.';
         }
 
         await ctx.reply(replyText);
       } else {
-        await ctx.reply(`❌ 处理失败：${response.error || '未知错误'}`);
+        await ctx.reply(`❌ Processing failed: ${response.error || 'Unknown error'}`);
       }
     } catch (error) {
-      console.error('处理消息时出错:', error);
-      await ctx.reply('❌ 处理您的请求时发生错误，请稍后重试。');
+      console.error('Processing message error:', error);
+      await ctx.reply('❌ An error occurred while processing your request, please try again later.');
     }
   }
 
